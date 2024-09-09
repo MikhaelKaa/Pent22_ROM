@@ -13,8 +13,8 @@ char i = 0;
 char key[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 static volatile char irq_0x38_flag = 0;
 static volatile char nmi_0x66_flag = 0;
-p_ox7ffd_t p_7ffd;
-
+p_0x7ffd_t p_7ffd;
+p_0xeff7_t p_eff7;
 void main() {
 
     init_screen();
@@ -25,7 +25,7 @@ void main() {
         *(screen + 4) = key[0];
         *(screen + 6) = key[1];
 
-        itoa(w, buff);
+        itoa(w&1, buff);
         print(1, 0, buff);
 
         if(irq_0x38_flag) {
@@ -38,10 +38,14 @@ void main() {
             nmi_0x66_flag = 0;
             char tmp = *(screen + 2);
             *(screen + 2) = tmp + 1;
-            w++;
-            p_7ffd.screen = w;
-            port_0x7ffd = *((char*)(&p_7ffd));
+            if((w&1) == 1) {
+                port_0xeff7 = 16;
+            } else {
+                port_0xeff7 = 0;
+            }
+            //port_0xeff7 = *((char*)(&p_eff7));
             // port_0x00fe = w++;
+            w++;
         }
     }
 }
