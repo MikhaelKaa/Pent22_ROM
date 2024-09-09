@@ -2,6 +2,9 @@
 #include "font.h"
 
 void print(char x, char y, char* text) __naked {
+    NO_WARN(x);
+    NO_WARN(y);
+    NO_WARN(text);
     __asm
     ld iy, #2
     add iy, sp

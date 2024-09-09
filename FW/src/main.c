@@ -1,5 +1,6 @@
 
 #include "main.h"
+#include "p22_ports.h"
 
 #define SCREEN_START_ADR (0x4000)
 #define SCREEN_SIZE ((256/8)*192)
@@ -12,6 +13,7 @@ char i = 0;
 char key[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 static volatile char irq_0x38_flag = 0;
 static volatile char nmi_0x66_flag = 0;
+p_ox7ffd_t p_7ffd;
 
 void main() {
 
@@ -37,6 +39,8 @@ void main() {
             char tmp = *(screen + 2);
             *(screen + 2) = tmp + 1;
             w++;
+            p_7ffd.screen = w;
+            port_0x7ffd = *((char*)(&p_7ffd));
             // port_0x00fe = w++;
         }
     }

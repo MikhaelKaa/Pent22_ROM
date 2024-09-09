@@ -21,5 +21,5 @@
 #endif
 
 #define NULL (0)
-
+#define NO_WARN(x) (void)x
 #endif /* __DEFINES__ */
