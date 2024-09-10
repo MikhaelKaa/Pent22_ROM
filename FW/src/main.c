@@ -15,18 +15,45 @@ static volatile char irq_0x38_flag = 0;
 static volatile char nmi_0x66_flag = 0;
 p_0x7ffd_t p_7ffd;
 p_0xeff7_t p_eff7;
+char key_old = 0;
+
 void main() {
+
+    // Режим турбо можно переключить, если выполнить код из ОЗУ. 
+    // Без этого не получается - просто не реагирует на изменение 4 бита eff7
+    char * turbo_hack = 16384;
+    *turbo_hack = 0xc9; // 0xc9 это опкод z80 ret.
+    __asm jp 16384 __endasm; // Передаем управление на ret. И возвращаемся обратно.
 
     init_screen();
     port_0x00fe = 0;
     char buff[10] = {0};
-    
+
     while(1) {
         *(screen + 4) = key[0];
         *(screen + 6) = key[1];
 
-        itoa(w&1, buff);
-        print(1, 0, buff);
+
+        if(key[1] != key_old) {
+            switch (key[1])
+            {
+            case 254: // 0
+                port_0xeff7 = 16; // turbo off
+                break;
+            case 253: // 9
+                port_0xeff7 = 0; // turbo on
+                break;  
+            case 251: // 8
+                //__asm jp 25000 __endasm;
+                break;      
+            default:
+                break;
+            }
+            key_old = key[0];
+            itoa(key[1], buff);
+            print(1, 0, buff);
+        }
+
 
         if(irq_0x38_flag) {
             irq_0x38_flag = 0;

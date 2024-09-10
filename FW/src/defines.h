@@ -18,6 +18,7 @@
     #define nop
     #define ld
     #define iy
+    #define jp
 #endif
 
 #define NULL (0)
