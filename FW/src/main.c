@@ -18,21 +18,22 @@ p_0xeff7_t p_eff7;
 char key_old = 0;
 
 void main() {
-
-    // Режим турбо можно переключить, если выполнить код из ОЗУ. 
-    // Без этого не получается - просто не реагирует на изменение 4 бита eff7
-    char * turbo_hack = 16384;
-    *turbo_hack = 0xc9; // 0xc9 это опкод z80 ret.
-    __asm jp 16384 __endasm; // Передаем управление на ret. И возвращаемся обратно.
-
     init_screen();
+
+    // Режим турбо можно переключить, если сначала выполнить код из ОЗУ. 
+    // Без этого не получается - просто не реагирует на изменение 4 бита eff7
+    port_0x7ffd = 0;
+    for (unsigned int i = SCREEN_START_ADR+SCREEN_SIZE+SCREEN_ATR_SIZE; i < 65530; i++) *((char *)i) = 0;
+    char *turbo_hack = (char*)25000;
+    *turbo_hack = 0xc9; // 0xc9 это опкод z80 ret.
+    // __asm jp 25000 __endasm; // Передаем управление на ret. И возвращаемся обратно.
+
     port_0x00fe = 0;
     char buff[10] = {0};
 
     while(1) {
         *(screen + 4) = key[0];
         *(screen + 6) = key[1];
-
 
         if(key[1] != key_old) {
             switch (key[1])
@@ -44,7 +45,8 @@ void main() {
                 port_0xeff7 = 0; // turbo on
                 break;  
             case 251: // 8
-                //__asm jp 25000 __endasm;
+                *turbo_hack = 0xc9; // 0xc9 это опкод z80 ret.
+                __asm jp 25000 __endasm;
                 break;      
             default:
                 break;
