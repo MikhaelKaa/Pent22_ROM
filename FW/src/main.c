@@ -32,11 +32,21 @@ void main() {
 
     while(1) {
 
-        for(char n = 0; n < 3; n++) {
+        for(char n = 0; n < 8; n++) {
             delay(65534);
-            p_7ffd.ram_page_base++;
-            itoa(p_7ffd.ram_page_base, buff);
+
+            p_7ffd.ram_page_base = n;
+            port_0x7ffd = *((char*)&p_7ffd);
+            *((char*)0xc000) = n;
+
+            itoa(n, buff);
             print(0, 0, buff);
+
+            itoa(p_7ffd.ram_page_base, buff);
+            print(1, 0, buff);
+
+            itoa(*((char*)0xc000), buff);
+            print(2, 0, buff);
         }
 
 
