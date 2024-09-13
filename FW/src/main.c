@@ -103,4 +103,5 @@ volatile void irq_0x38(void) {
 
 volatile void nmi_0x66(void) {
     nmi_0x66_flag = 1;
+    *(screen + SCREEN_SIZE-3) = i;
 }

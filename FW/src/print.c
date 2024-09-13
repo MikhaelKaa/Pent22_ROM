@@ -43,8 +43,8 @@ print_string_loop:
     pop de
     pop hl
 
-    xor a   
-    ld (hl), a 
+    // xor a   
+    // ld (hl), a 
 
     inc hl
     inc de
