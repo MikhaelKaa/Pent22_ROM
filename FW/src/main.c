@@ -1,6 +1,7 @@
 
 #include "main.h"
 #include "p22_ports.h"
+#include "general_sound.h"
 
 #define SCREEN_START_ADR (0x4000)
 #define SCREEN_SIZE ((256/8)*192)
@@ -10,7 +11,7 @@ volatile void irq_0x38(void);
 volatile void nmi_0x66(void);
 
 void init_screen(void);
-void delay(int);
+void* memset(void* buf, char z, unsigned int bytes);
 
 char *screen = 0x4000;
 char w = 0;
@@ -31,11 +32,11 @@ void set_page(char page) {
     port_0x7ffd = *((char*)&p_7ffd);
 }
 
+    char buff[10] = {0};
 
 void main() {
     init_screen();
     port_0x00fe = 0;
-    char buff[10] = {0};
     
 
 
@@ -50,24 +51,9 @@ void main() {
             nmi_0x66_flag = 0;
         }
 
-        // Заполним начало каждой баки памяти её номером.
-        for(char nw = 0; nw < 64; nw++) {
-            if((nw == 2) || (nw == 5)) continue;;
-            set_page(nw);
-            *((char*)0xc000) = nw;
-        }
-
-        // Проверяем.
-        long int total_mem = 0;
-        for(char nr = 0; nr < 64; nr++) {
-            if((nr == 2) || (nr == 5)) continue;;
-            set_page(nr);
-            if(*((char*)0xc000) == nr) total_mem+=0x4000;
-            print(0, 0, "fast mem test:");
-            litoa(total_mem, buff);
-            print(0, 15, buff);
-            //delay(32768);
-        }
+        fast_mem_test(0);
+        memset(buff, 0, sizeof(buff));
+        gs_test(1);
 
         while(1) __asm nop __endasm;
     }
@@ -104,4 +90,15 @@ volatile void irq_0x38(void) {
 volatile void nmi_0x66(void) {
     nmi_0x66_flag = 1;
     *(screen + SCREEN_SIZE-3) = i;
+}
+
+void* memset(void* buf, char z, unsigned int bytes)
+{
+    if (buf)
+    {
+       char* tmp_mem = (char*)buf;
+       while (bytes--) *tmp_mem++ = z;
+    }
+    
+    return buf;
 }

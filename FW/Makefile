@@ -36,6 +36,9 @@ all:
 	# Compile 
 	$(CC) -o $(BUILD_DIR)/$(TARGET).rel -c -I$(SRC_DIR) $(CFLAGS) $(SRC_DIR)/main.c
 	$(CC) -o $(BUILD_DIR)/print.rel -c $(CFLAGS) $(SRC_DIR)/print.c
+	$(CC) -o $(BUILD_DIR)/mem_test.rel -c $(CFLAGS) $(SRC_DIR)/mem_test.c
+	$(CC) -o $(BUILD_DIR)/general_sound.rel -c $(CFLAGS) $(SRC_DIR)/general_sound.c
+	
 	
 	# Link both
 	$(CC) -o $(BUILD_DIR)/main.ihx \
@@ -44,7 +47,10 @@ all:
 		-Llib -llibsdcc-z80 \
 		$(BUILD_DIR)/crt0.rel \
 		$(BUILD_DIR)/main.rel \
-		$(BUILD_DIR)/print.rel
+		$(BUILD_DIR)/print.rel \
+		$(BUILD_DIR)/mem_test.rel \
+		$(BUILD_DIR)/general_sound.rel \
+		
 		
 	
 	# Finally, convert ihx to binary

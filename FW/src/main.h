@@ -6,6 +6,10 @@
 void print(char x, char y, char* text) __naked;
 int itoa(int value, char *ptr);
 int litoa(long int value, char *ptr);
+void set_page(char page);
+extern char buff[10];
+void fast_mem_test(char i);
+void delay(int time);
 
 // Полуряд Space...B.
 __sfr __banked __at(0x7ffe) port_0x7ffe;
@@ -31,5 +35,6 @@ __sfr __banked __at(0x00fe) port_0x00fe;
 __sfr __banked __at(0xfffd) port_0xfffd;
 // Порт регистр данных AY-3-8910.
 __sfr __banked __at(0xbffd) port_0xbffd;
+
 
 #endif /* __MAIN__ */
