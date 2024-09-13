@@ -5,7 +5,7 @@
 
 void print(char x, char y, char* text) __naked;
 int itoa(int value, char *ptr);
-
+int litoa(long int value, char *ptr);
 
 // Полуряд Space...B.
 __sfr __banked __at(0x7ffe) port_0x7ffe;

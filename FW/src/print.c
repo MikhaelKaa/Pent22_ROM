@@ -42,6 +42,10 @@ print_string_loop:
     call print_char
     pop de
     pop hl
+
+    xor a   
+    ld (hl), a 
+
     inc hl
     inc de
     jp print_string_loop
@@ -66,6 +70,37 @@ pchar_loop:
 int itoa(int value, char *ptr)
 {
     int count = 0, temp;
+    // Проверка на нулевой указатель. Просто не передавайте сюда нулевой указатель.
+    // if(ptr == NULL)
+    //     return 0;
+    if(value == 0)
+    {
+        *ptr = '0';
+        return 1;
+    }
+
+    if(value < 0)
+    {
+        value = (-1);
+        *ptr++ = '-';
+        count++;
+    }
+
+    for(temp=value; temp>0; temp/=10, ptr++);
+        *ptr = '\0';
+
+    for(temp=value; temp>0; temp/=10)
+    {
+        *--ptr = temp%10 + '0';
+        count++;
+    }
+    return count;
+}
+
+
+int litoa(long int value, char *ptr)
+{
+    long int count = 0, temp;
     // Проверка на нулевой указатель. Просто не передавайте сюда нулевой указатель.
     // if(ptr == NULL)
     //     return 0;

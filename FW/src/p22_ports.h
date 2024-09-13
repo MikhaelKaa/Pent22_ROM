@@ -14,8 +14,7 @@ typedef struct p_ox7ffd
     unsigned ram_page_base  : 3;
     unsigned screen         : 1;
     unsigned rom_page       : 1;
-    unsigned ram_page_ex0   : 1;
-    unsigned ram_page_ex1   : 2;
+    unsigned ram_page_ex    : 3;
 }p_0x7ffd_t;
 
 // Порт расширенной конфигурации.

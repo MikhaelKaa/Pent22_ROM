@@ -23,6 +23,15 @@ p_0xeff7_t p_eff7;
 char key_old = 0;
 char pages[] = {6, 7};
 
+void set_page(char page);
+void set_page(char page) {
+    //if((page == 2) || (page == 5)) return;
+    p_7ffd.ram_page_base = page & 0x07;
+    p_7ffd.ram_page_ex = (page >> 3) & 0x07;
+    port_0x7ffd = *((char*)&p_7ffd);
+}
+
+
 void main() {
     init_screen();
     port_0x00fe = 0;
@@ -32,25 +41,6 @@ void main() {
 
     while(1) {
 
-        for(char n = 0; n < 8; n++) {
-            delay(65534);
-
-            p_7ffd.ram_page_base = n;
-            port_0x7ffd = *((char*)&p_7ffd);
-            *((char*)0xc000) = n;
-
-            itoa(n, buff);
-            print(0, 0, buff);
-
-            itoa(p_7ffd.ram_page_base, buff);
-            print(1, 0, buff);
-
-            itoa(*((char*)0xc000), buff);
-            print(2, 0, buff);
-        }
-
-
-
         if(irq_0x38_flag) {
             irq_0x38_flag = 0;
             *(screen + SCREEN_SIZE-1) = i;
@@ -59,6 +49,27 @@ void main() {
         if(nmi_0x66_flag) {
             nmi_0x66_flag = 0;
         }
+
+        // Заполним начало каждой баки памяти её номером.
+        for(char nw = 0; nw < 64; nw++) {
+            if((nw == 2) || (nw == 5)) continue;;
+            set_page(nw);
+            *((char*)0xc000) = nw;
+        }
+
+        // Проверяем.
+        long int total_mem = 0;
+        for(char nr = 0; nr < 64; nr++) {
+            if((nr == 2) || (nr == 5)) continue;;
+            set_page(nr);
+            if(*((char*)0xc000) == nr) total_mem+=0x4000;
+            print(0, 0, "fast mem test:");
+            litoa(total_mem, buff);
+            print(0, 15, buff);
+            //delay(32768);
+        }
+
+        while(1) __asm nop __endasm;
     }
 }
 
