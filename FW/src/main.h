@@ -6,10 +6,11 @@
 void print(char x, char y, char* text) __naked;
 int itoa(int value, char *ptr);
 int litoa(long int value, char *ptr);
-void set_page(char page);
+void P22_set_page(char page);
 extern char buff[10];
 void fast_mem_test(char i);
 void delay(int time);
+extern void (*set_page)(char page);
 
 // Полуряд Space...B.
 __sfr __banked __at(0x7ffe) port_0x7ffe;

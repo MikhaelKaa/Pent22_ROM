@@ -2,6 +2,7 @@
     "files.associations": {
         "stdbool.h": "c",
         "main.h": "c",
-        "defines.h": "c"
+        "defines.h": "c",
+        "general_sound.h": "c"
     }
 }

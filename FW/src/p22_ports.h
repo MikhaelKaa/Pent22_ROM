@@ -9,13 +9,13 @@
 __sfr __banked __at(0xeff7) port_0xeff7;
 
 // Базовый порт конфигурации.
-typedef struct p_ox7ffd
+typedef struct p_ox7ffd_p22
 {
     unsigned ram_page_base  : 3;
     unsigned screen         : 1;
     unsigned rom_page       : 1;
     unsigned ram_page_ex    : 3;
-}p_0x7ffd_t;
+}p_0x7ffd_p22_t;
 
 // Порт расширенной конфигурации.
 typedef struct p_oxeff7

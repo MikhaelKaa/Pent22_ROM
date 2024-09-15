@@ -13,4 +13,10 @@ void gs_test(char i) {
     gs_total_mem = gtr_h*65536 + gtr_m*256 + gtr_l;
     litoa(gs_total_mem, buff);
     print(i, 0, buff);
+
+    GS_SET_CMD(GS_CMD_GET_PAGE_RAM);
+    delay(32789);
+    char gs_pages_ = GS_GET_DAT;
+    itoa(gs_pages_, buff);
+    print(i+1, 0, buff);
 }

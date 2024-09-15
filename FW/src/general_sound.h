@@ -35,7 +35,7 @@ __sfr __banked __at(0x0033) port_0x0033;
 Total RAM=65536*RAM.H+256*RAM.M+RAM.L
  */
 #define GS_CMD_GET_TOTAL_RAM    0x20
-
+#define GS_CMD_GET_PAGE_RAM     0x23
 
 
 #endif /* __GS__ */

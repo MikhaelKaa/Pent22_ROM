@@ -1,6 +1,6 @@
 
 #include "main.h"
-#include "p22_ports.h"
+
 #include "general_sound.h"
 
 #define SCREEN_START_ADR (0x4000)
@@ -19,18 +19,12 @@ char i = 0;
 char key[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 static volatile char irq_0x38_flag = 0;
 static volatile char nmi_0x66_flag = 0;
-p_0x7ffd_t p_7ffd;
-p_0xeff7_t p_eff7;
+
 char key_old = 0;
 char pages[] = {6, 7};
 
-void set_page(char page);
-void set_page(char page) {
-    //if((page == 2) || (page == 5)) return;
-    p_7ffd.ram_page_base = page & 0x07;
-    p_7ffd.ram_page_ex = (page >> 3) & 0x07;
-    port_0x7ffd = *((char*)&p_7ffd);
-}
+void P22_set_page(char page);
+
 
     char buff[10] = {0};
 
@@ -53,7 +47,7 @@ void main() {
 
         fast_mem_test(0);
         memset(buff, 0, sizeof(buff));
-        gs_test(1);
+        //gs_test(1);
 
         while(1) __asm nop __endasm;
     }
