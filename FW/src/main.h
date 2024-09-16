@@ -11,6 +11,7 @@ extern char buff[10];
 void fast_mem_test(char i);
 void delay(int time);
 extern void (*set_page)(char page);
+void* memset(void* buf, char z, unsigned int bytes);
 
 // Полуряд Space...B.
 __sfr __banked __at(0x7ffe) port_0x7ffe;
