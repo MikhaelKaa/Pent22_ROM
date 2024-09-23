@@ -16,6 +16,7 @@ void* memset(void* buf, char z, unsigned int bytes);
 char *screen = 0x4000;
 char w = 0;
 char i = 0;
+char n = 0;
 char key[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 static volatile char irq_0x38_flag = 0;
 static volatile char nmi_0x66_flag = 0;
@@ -44,12 +45,20 @@ void main() {
         if(nmi_0x66_flag) {
             nmi_0x66_flag = 0;
         }
+        
 
-        fast_mem_test(0);
-        memset(buff, 0, sizeof(buff));
+        n++;
+        for(char x = 0; x < 32; x++) {
+            for(char y = 0; y < 24; y++) {
+                print(23-y, x, (((y+x*24+n)%n)&(n/2))?(" "):("+"));
+            }
+        }
+
+        //fast_mem_test(0);
+        //memset(buff, 0, sizeof(buff));
         //gs_test(1);
 
-        while(1) __asm nop __endasm;
+        //while(1) __asm nop __endasm;
     }
 }
 
